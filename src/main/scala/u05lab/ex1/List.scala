@@ -74,12 +74,7 @@ enum List[A]:
 
   /** @throws UnsupportedOperationException if the list is empty */
   def reduce(op: (A, A) => A): A = this match
-
-    case h :: t if length==0 => op(h,)
-    case h :: t => op(h ,t.reduce(op))
-
     case h :: t => t.foldLeft(h)(op)
-
     case Nil() => throw new UnsupportedOperationException
 
   def takeRight(n: Int): List[A] = foldRight[List[A]](Nil())((h, t) => if t.length < n then h :: t else t)
@@ -103,18 +98,11 @@ object List:
   println(reference.span(_ % 2 != 0)) // (List(1), List(2, 3, 4))
   println(reference.span(_ < 3)) // (List(1, 2), List(3, 4))
 
-
-
-  println(reference.zipRight) // List((1, 0), (2, 1), (3, 2), (4, 3))
-  println(reference.partition(_ % 2 == 0)) // (List(2, 4), List(1, 3))
-  println(reference.span(_ % 2 != 0)) // (List(1), List(2, 3, 4))
-  println(reference.span(_ < 3)) // (List(1, 2), List(3, 4))
-
   println(reference.reduce(_ + _)) // 10
 
   try Nil.reduce[Int](_ + _)
   catch case ex: Exception => println(ex) // prints exception
   println(List(10).reduce(_ + _)) // 10
 
-  println(reference.takeRight(2)) // List(2, 3, 4)
+  println(reference.takeRight(3)) // List(2, 3, 4)
 
